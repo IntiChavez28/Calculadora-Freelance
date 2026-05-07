@@ -1,0 +1,681 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;700;800&display=swap');
+
+:root {
+  --bg: #0d0f14;
+  --surface: #141720;
+  --surface2: #1c2030;
+  --border: rgba(99,179,237,0.15);
+  --accent: #63b3ed;
+  --accent2: #68d391;
+  --accent3: #fbb03b;
+  --warn: #fc8181;
+  --text: #e2e8f4;
+  --muted: #718096;
+  --mono: 'JetBrains Mono', monospace;
+  --display: 'Syne', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, .root {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  min-height: 100vh;
+}
+
+.root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+h1 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.tagline {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 0.5px solid var(--border);
+}
+
+.badge {
+  background: rgba(99,179,237,0.1);
+  border: 0.5px solid rgba(99,179,237,0.3);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 1px;
+}
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.field { margin-bottom: 1rem; }
+.field:last-child { margin-bottom: 0; }
+
+.field label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.field label span {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: var(--surface2);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+input[type=number], input[type=text], select {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 8px 10px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input[type=number]:focus, select:focus {
+  border-color: rgba(99,179,237,0.5);
+}
+
+select option { background: var(--surface); }
+
+.tools-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.tool-chip {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  cursor: pointer;
+  border: 0.5px solid var(--border);
+  background: var(--surface2);
+  color: var(--muted);
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.tool-chip.active {
+  background: rgba(99,179,237,0.12);
+  border-color: rgba(99,179,237,0.4);
+  color: var(--accent);
+}
+
+.results-section {
+  background: var(--surface);
+  border: 0.5px solid rgba(104,211,145,0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.results-header {
+  background: rgba(104,211,145,0.06);
+  border-bottom: 0.5px solid rgba(104,211,145,0.15);
+  padding: 10px 1.25rem;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.results-header::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent2);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+}
+
+.metric-cell {
+  padding: 1rem 1.25rem;
+  border-right: 0.5px solid var(--border);
+}
+
+.metric-cell:last-child { border-right: none; }
+
+.metric-label {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.metric-value.green { color: var(--accent2); }
+.metric-value.blue { color: var(--accent); }
+.metric-value.amber { color: var(--accent3); }
+.metric-value.red { color: var(--warn); }
+
+.formula-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 6px;
+  padding: 1rem 1.25rem;
+  border-top: 0.5px solid var(--border);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.formula-op {
+  color: var(--accent3);
+  font-weight: 700;
+}
+
+.formula-val {
+  color: var(--text);
+  text-align: center;
+}
+
+.risk-bar-section {
+  padding: 1rem 1.25rem;
+  border-top: 0.5px solid var(--border);
+}
+
+.risk-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 6px;
+  color: var(--muted);
+}
+
+.risk-bar-bg {
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.risk-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.4,0,0.2,1), background 0.4s;
+}
+
+.export-area {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.export-header {
+  padding: 10px 1.25rem;
+  border-bottom: 0.5px solid var(--border);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1rem 1.25rem;
+  resize: none;
+  outline: none;
+  line-height: 1.7;
+}
+
+.btn {
+  background: transparent;
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+
+.btn:hover {
+  background: rgba(99,179,237,0.08);
+  border-color: rgba(99,179,237,0.4);
+  color: var(--accent);
+}
+
+.btn.copied {
+  border-color: rgba(104,211,145,0.4);
+  color: var(--accent2);
+}
+
+.divider {
+  height: 0.5px;
+  background: var(--border);
+  margin: 1rem 0;
+}
+
+.tip {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 8px 12px;
+  background: rgba(251,176,59,0.06);
+  border-left: 2px solid var(--accent3);
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.currency-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.currency-row select { width: auto; min-width: 80px; }
+.currency-row input { flex: 1; }
+</style>
+
+<div class="root">
+  <h2 class="sr-only">Calculadora de presupuestos para freelancers con sliders de complejidad y riesgo</h2>
+
+  <div class="header">
+    <div>
+      <h1>BUDGET CALC</h1>
+      <div class="tagline">Calculadora inteligente para freelancers</div>
+    </div>
+    <div class="badge">v2.0 — LIVE</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Parámetros del proyecto</div>
+    <div class="grid2">
+      <div class="field">
+        <label>Horas estimadas <span id="lbl-hours">40</span></label>
+        <input type="range" id="hours" min="1" max="400" step="1" value="40">
+      </div>
+      <div class="field">
+        <label>Tarifa base / hora <span></span></label>
+        <div class="currency-row">
+          <select id="currency">
+            <option value="$">USD $</option>
+            <option value="€">EUR €</option>
+            <option value="MXN">MXN</option>
+            <option value="COP">COP</option>
+            <option value="ARS">ARS</option>
+          </select>
+          <input type="number" id="rate" value="50" min="1" max="10000">
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Complejidad técnica <span id="lbl-complexity">5 — Media</span></label>
+      <input type="range" id="complexity" min="1" max="10" step="1" value="5">
+    </div>
+    <div class="field">
+      <label>Margen de beneficio (%) <span id="lbl-margin">20%</span></label>
+      <input type="range" id="margin" min="5" max="60" step="1" value="20">
+    </div>
+    <div class="field">
+      <label>Factor de riesgo cliente (%) <span id="lbl-risk">15%</span></label>
+      <input type="range" id="risk" min="0" max="50" step="1" value="15">
+    </div>
+    <div class="field">
+      <label>Revisiones incluidas <span id="lbl-revisions">2</span></label>
+      <input type="range" id="revisions" min="0" max="10" step="1" value="2">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Herramientas / tecnologías</div>
+    <div class="tools-grid" id="tools-grid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Tipo de cliente</div>
+    <div class="field">
+      <select id="client-type">
+        <option value="1.0">Startup / Emprendedor personal</option>
+        <option value="1.1" selected>PYME / Empresa mediana</option>
+        <option value="1.25">Corporativo / Enterprise</option>
+        <option value="1.4">Agencia / Intermediario</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="tip">
+    ⚡ Los cálculos se actualizan en tiempo real. El <strong style="color:var(--accent3)">factor de complejidad</strong> aplica un multiplicador exponencial que refleja el coste real de proyectos complejos.
+  </div>
+
+  <div class="results-section">
+    <div class="results-header">Resumen financiero</div>
+    <div class="metric-grid">
+      <div class="metric-cell">
+        <div class="metric-label">Base neta</div>
+        <div class="metric-value blue" id="res-base">—</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Con riesgos</div>
+        <div class="metric-value amber" id="res-risk">—</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Precio final</div>
+        <div class="metric-value green" id="res-final">—</div>
+      </div>
+    </div>
+    <div class="formula-row">
+      <div class="formula-val" id="f-base">—</div>
+      <div class="formula-op">×</div>
+      <div class="formula-val" id="f-cx">—</div>
+      <div class="formula-op">+</div>
+      <div class="formula-val" id="f-risk">—</div>
+      <div class="formula-op">+</div>
+      <div class="formula-val" id="f-margin">—</div>
+    </div>
+    <div class="risk-bar-section">
+      <div class="risk-label-row">
+        <span>Nivel de riesgo total</span>
+        <span id="risk-pct-label">—</span>
+      </div>
+      <div class="risk-bar-bg">
+        <div class="risk-bar-fill" id="risk-bar" style="width:0%"></div>
+      </div>
+    </div>
+    <div style="padding: 10px 1.25rem; border-top: 0.5px solid var(--border);">
+      <div class="metric-grid" style="border:none">
+        <div class="metric-cell" style="border:none; padding: 0 1rem 0 0;">
+          <div class="metric-label">Horas + revisiones</div>
+          <div style="font-size:15px; font-weight:500; margin-top:2px;" id="res-hours">—</div>
+        </div>
+        <div class="metric-cell" style="border:none; padding: 0 1rem;">
+          <div class="metric-label">Tarifa efectiva/hr</div>
+          <div style="font-size:15px; font-weight:500; margin-top:2px;" id="res-effective">—</div>
+        </div>
+        <div class="metric-cell" style="border:none; padding: 0 0 0 1rem;">
+          <div class="metric-label">Multiplicador total</div>
+          <div style="font-size:15px; font-weight:500; margin-top:2px;" id="res-multiplier">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="export-area">
+    <div class="export-header">
+      <span>Resumen exportable</span>
+      <button class="btn" id="copy-btn" onclick="copyText()">Copiar</button>
+    </div>
+    <textarea id="export-text" rows="14" readonly></textarea>
+  </div>
+</div>
+
+<script>
+const TOOLS = [
+  { name: 'React', cost: 1.05 },
+  { name: 'Vue', cost: 1.05 },
+  { name: 'Node.js', cost: 1.04 },
+  { name: 'Python', cost: 1.03 },
+  { name: 'Docker', cost: 1.06 },
+  { name: 'AWS', cost: 1.08 },
+  { name: 'GraphQL', cost: 1.07 },
+  { name: 'TypeScript', cost: 1.04 },
+  { name: 'Next.js', cost: 1.06 },
+  { name: 'PostgreSQL', cost: 1.03 },
+  { name: 'MongoDB', cost: 1.03 },
+  { name: 'Figma', cost: 1.02 },
+  { name: 'Stripe API', cost: 1.05 },
+  { name: 'AI/ML', cost: 1.12 },
+  { name: 'Blockchain', cost: 1.15 },
+];
+
+const activeTools = new Set();
+const toolsCostMap = {};
+TOOLS.forEach(t => toolsCostMap[t.name] = t.cost);
+
+const grid = document.getElementById('tools-grid');
+TOOLS.forEach(t => {
+  const chip = document.createElement('div');
+  chip.className = 'tool-chip';
+  chip.textContent = t.name;
+  chip.dataset.name = t.name;
+  chip.addEventListener('click', () => {
+    if (activeTools.has(t.name)) {
+      activeTools.delete(t.name);
+      chip.classList.remove('active');
+    } else {
+      activeTools.add(t.name);
+      chip.classList.add('active');
+    }
+    calculate();
+  });
+  grid.appendChild(chip);
+});
+
+const COMPLEXITY_LABELS = ['','Trivial','Simple','Leve','Moderada-','Moderada','Moderada+','Alta-','Alta','Muy alta','Extrema'];
+
+function getSlider(id) { return parseFloat(document.getElementById(id).value); }
+function getCurrency() { return document.getElementById('currency').value; }
+function getClientType() { return parseFloat(document.getElementById('client-type').value); }
+
+function fmt(val) {
+  const cur = getCurrency();
+  const sym = cur === 'USD $' ? '$' : cur;
+  const rounded = Math.round(val);
+  return sym + rounded.toLocaleString('es-MX');
+}
+
+function calculate() {
+  const hours = getSlider('hours');
+  const rate = parseFloat(document.getElementById('rate').value) || 50;
+  const complexityRaw = getSlider('complexity');
+  const marginPct = getSlider('margin');
+  const riskPct = getSlider('risk');
+  const revisions = getSlider('revisions');
+  const clientMult = getClientType();
+  const cur = getCurrency();
+
+  document.getElementById('lbl-hours').textContent = hours;
+  document.getElementById('lbl-complexity').textContent = complexityRaw + ' — ' + COMPLEXITY_LABELS[complexityRaw];
+  document.getElementById('lbl-margin').textContent = marginPct + '%';
+  document.getElementById('lbl-risk').textContent = riskPct + '%';
+  document.getElementById('lbl-revisions').textContent = revisions;
+
+  const complexityMultiplier = 1 + Math.pow((complexityRaw - 1) / 9, 1.6) * 0.9;
+
+  const revisionHours = revisions * (hours * 0.08);
+  const totalHours = hours + revisionHours;
+
+  let toolMultiplier = 1.0;
+  activeTools.forEach(name => { toolMultiplier *= toolsCostMap[name]; });
+
+  const basePrice = totalHours * rate;
+  const afterComplexity = basePrice * complexityMultiplier * toolMultiplier * clientMult;
+  const riskAmount = afterComplexity * (riskPct / 100);
+  const afterRisk = afterComplexity + riskAmount;
+  const marginAmount = afterRisk * (marginPct / 100);
+  const finalPrice = afterRisk + marginAmount;
+
+  const effectiveRate = finalPrice / totalHours;
+  const totalMultiplier = finalPrice / basePrice;
+  const riskLevel = Math.min(100, ((complexityRaw / 10) * 40 + riskPct * 0.6 + (activeTools.size * 3)));
+  const riskBarColor = riskLevel < 35 ? '#68d391' : riskLevel < 65 ? '#fbb03b' : '#fc8181';
+
+  const sym = cur === 'USD $' ? '$' : cur;
+
+  document.getElementById('res-base').textContent = fmt(afterComplexity);
+  document.getElementById('res-risk').textContent = fmt(afterRisk);
+  document.getElementById('res-final').textContent = fmt(finalPrice);
+  document.getElementById('res-hours').textContent = Math.round(totalHours) + ' hrs';
+  document.getElementById('res-effective').textContent = sym + Math.round(effectiveRate) + '/hr';
+  document.getElementById('res-multiplier').textContent = 'x' + totalMultiplier.toFixed(2);
+
+  document.getElementById('f-base').textContent = sym + Math.round(basePrice);
+  document.getElementById('f-cx').textContent = 'cx×' + complexityMultiplier.toFixed(2);
+  document.getElementById('f-risk').textContent = 'riesgo ' + sym + Math.round(riskAmount);
+  document.getElementById('f-margin').textContent = 'margen ' + sym + Math.round(marginAmount);
+
+  document.getElementById('risk-bar').style.width = riskLevel + '%';
+  document.getElementById('risk-bar').style.background = riskBarColor;
+  document.getElementById('risk-pct-label').textContent = Math.round(riskLevel) + '% — ' + (riskLevel < 35 ? 'Bajo' : riskLevel < 65 ? 'Moderado' : 'Alto');
+  document.getElementById('risk-pct-label').style.color = riskBarColor;
+
+  const toolsList = activeTools.size > 0 ? [...activeTools].join(', ') : 'Ninguna seleccionada';
+  const clientLabel = document.getElementById('client-type').options[document.getElementById('client-type').selectedIndex].text;
+  const dateStr = new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
+
+  document.getElementById('export-text').value =
+`╔══════════════════════════════════════════╗
+║    PRESUPUESTO FREELANCE — ${dateStr.toUpperCase().slice(0,12)}     ║
+╚══════════════════════════════════════════╝
+
+PARÁMETROS
+──────────────────────────────────────────
+  Horas estimadas:     ${hours} hrs
+  Horas de revisión:   +${Math.round(revisionHours)} hrs (${revisions} revisiones)
+  Total horas:         ${Math.round(totalHours)} hrs
+  Tarifa base:         ${sym}${rate}/hr
+  Complejidad:         ${complexityRaw}/10 — ${COMPLEXITY_LABELS[complexityRaw]}
+  Herramientas:        ${toolsList}
+  Tipo de cliente:     ${clientLabel}
+
+DESGLOSE FINANCIERO
+──────────────────────────────────────────
+  Base (horas × tarifa):   ${fmt(basePrice)}
+  Factor complejidad:      ×${complexityMultiplier.toFixed(3)}
+  Factor herramientas:     ×${toolMultiplier.toFixed(3)}
+  Factor cliente:          ×${clientMult.toFixed(2)}
+  ──────────────────
+  Subtotal ajustado:       ${fmt(afterComplexity)}
+  + Riesgo (${riskPct}%):        ${fmt(riskAmount)}
+  ──────────────────
+  Subtotal c/ riesgo:      ${fmt(afterRisk)}
+  + Margen (${marginPct}%):       ${fmt(marginAmount)}
+  ══════════════════
+  PRECIO FINAL:            ${fmt(finalPrice)}
+
+INDICADORES
+──────────────────────────────────────────
+  Tarifa efectiva/hr:      ${sym}${Math.round(effectiveRate)}/hr
+  Multiplicador total:     ×${totalMultiplier.toFixed(2)}
+  Nivel de riesgo:         ${Math.round(riskLevel)}%
+
+Generado con Budget Calc para Freelancers
+`;
+}
+
+['hours','complexity','margin','risk','revisions'].forEach(id => {
+  document.getElementById(id).addEventListener('input', calculate);
+});
+document.getElementById('rate').addEventListener('input', calculate);
+document.getElementById('currency').addEventListener('change', calculate);
+document.getElementById('client-type').addEventListener('change', calculate);
+
+calculate();
+
+function copyText() {
+  const ta = document.getElementById('export-text');
+  navigator.clipboard.writeText(ta.value).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
